@@ -30,7 +30,7 @@ index: async (req, res) => {
 
         const employees = await Employee.findAll();
 
-        res.render("insert", { employees });
+        res.json(employees);
 
 },
 
@@ -65,24 +65,17 @@ getEmployee: async (req, res) => {
 },
   // UPDATE
 update: async (req, res) => {
-
+    try {
         const { id } = req.params;
 
-        const {
-            FirstName,
-            LastName,
-            Department,
-            Position,
-            Salary,
-            EmploymentStatus
-        } = req.body;
+        const {FirstName,LastName,Department,Position,Salary,EmploymentStatus} = req.body;
 
         const employee = await Employee.findByPk(id);
 
         if (!employee) {
             return res.status(404).json({
                 success: false,
-                message: "Employee not found"
+                message: "User not found"
             });
         }
 
@@ -91,25 +84,49 @@ update: async (req, res) => {
             LastName,
             Department,
             Position,
-            Salary: Salary === "" ? null : Salary,
+            Salary,
             EmploymentStatus
         });
 
-        res.redirect("/employees");
-
+        res.status(200).json({
+            success: true,
+            message: "User updated successfully",
+            data: employee
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
 },
 // DELETE
 delete: async (req, res) => {
-
+    try {
         const { id } = req.params;
         const employee = await Employee.findByPk(id);
 
+        if (!employee) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
 
         await employee.destroy();
 
-        res.redirect("/employees");
-
-    },
+        res.status(200).json({
+            success: true,
+            message: "User deleted successfully",
+            data: employee
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+},
 };
 
 export { employee };

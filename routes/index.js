@@ -43,7 +43,7 @@ router.get("/logout", logoutUser);
 router.get("/employees", employee.index);
 router.post("/employees", employee.insert);
 router.get("/employees/:id", employee.getEmployee);
-router.post("/employees/:id", employee.update);
-router.post("/employees/:id/delete", employee.delete);
+router.put("/employees/:id", employee.update);
+router.delete("/employees/:id/delete", employee.delete);
 
 export default router;
