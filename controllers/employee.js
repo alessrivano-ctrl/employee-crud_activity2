@@ -27,69 +27,45 @@ await sequelize.sync();
 const employee ={
   // READ ALL EMPLOYEES
 index: async (req, res) => {
-    try {
+
         const employees = await Employee.findAll();
 
-        return res.status(200).json({
-            success: true,
-            message: "Employees retrieved successfully",
-            data: employees
-        });
+        res.render("insert", { employees });
 
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
 },
 
     insert: async (req, res) => {
-    try {
-        const employee = await Employee.create({
-            FirstName: req.body.FirstName,
-            LastName: req.body.LastName,
-            Department: req.body.Department,
-            Position: req.body.Position,
-            Salary: req.body.Salary,
-            EmploymentStatus: req.body.EmploymentStatus
+        const {
+            FirstName,
+            LastName,
+            Department,
+            Position,
+            Salary,
+            EmploymentStatus,
+        }= req.body;
+        const student = await Employee.create ({
+            FirstName,
+            LastName,
+            Department,
+            Position,
+            Salary,
+            EmploymentStatus
         });
+        res.redirect("/employees")
 
-        return res.status(201).json({
-            success: true,
-            message: "Employee created successfully",
-            data: employee
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
 },
 
-    // READ ALL EMPLOYEES
-get: async (req, res) => {
-    try {
-        const employees = await Employee.findAll();
+    // GET ONE EMPLOYEE FOR EDITING
+getEmployee: async (req, res) => {
+        const id = req.params.id;
+        const employee = await Employee.findByPk(id);
 
-        return res.status(200).json({
-            success: true,
-            message: "Employees retrieved successfully",
-            data: employees
-        });
 
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
+        res.render("edit", { employee });
 },
   // UPDATE
 update: async (req, res) => {
-    try {
+
         const { id } = req.params;
 
         const {
@@ -115,50 +91,25 @@ update: async (req, res) => {
             LastName,
             Department,
             Position,
-            Salary,
+            Salary: Salary === "" ? null : Salary,
             EmploymentStatus
         });
 
-        res.status(200).json({
-            success: true,
-            message: "Employee updated successfully",
-            data: employee
-        });
+        res.redirect("/employees");
 
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
 },
 // DELETE
 delete: async (req, res) => {
-    try {
+
         const { id } = req.params;
         const employee = await Employee.findByPk(id);
 
-        if (!employee) {
-            return res.status(404).json({
-                success: false,
-                message: "Employee not found"
-            });
-        }
 
         await employee.destroy();
 
-        res.status(200).json({
-            success: true,
-            message: "Employee deleted successfully",
-            data: employee
-        });
+        res.redirect("/employees");
 
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-},
+    },
 };
+
 export { employee };

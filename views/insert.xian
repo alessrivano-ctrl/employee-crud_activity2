@@ -1,0 +1,44 @@
+{{> head }}
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mt-10">Welcome to XianFire 🔥</h1>
+    <form method="post" action="/employees">
+        <input type="text" name="FirstName" placeholder="FirstName">
+        <input type="text" name="LastName" placeholder="LastName">
+        <input type="text" name="Department" placeholder="Department">
+        <input type="text" name="Position" placeholder="Position">
+        <input type="text" name="Salary" placeholder="Salary">
+        <input type="text" name="EmploymentStatus" placeholder="EmploymentStatus">
+        <input type="submit">
+    </form>
+
+  </div>
+  <table>
+    <tr>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Department</th>
+        <th>Position</th>
+        <th>Salary</th>
+        <th>EmploymentStatus</th>
+        <th>action</th>
+    </tr>
+    {{#each employees}}
+    <tr>
+        <td>{{FirstName}}</td>
+        <td>{{LastName}}</td>
+        <td>{{Department}}</td>
+        <td>{{Position}}</td>
+        <td>{{Salary}}</td>
+        <td>{{EmploymentStatus}}</td>
+
+        <td>
+            <a href="/employees/{{id}}">edit</a>
+            <form method="post" action="/employees/{{id}}/delete" class="inline">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {{/each}}
+  </table>
+{{> footer }}

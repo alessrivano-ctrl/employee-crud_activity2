@@ -28,7 +28,7 @@ import express from "express";
 import { homePage } from "../controllers/homeController.js";
 import { employee } from "../controllers/employee.js";
 const router = express.Router();
-router.get("/", homePage);
+router.get("/", employee.index);
 
 import { loginPage, registerPage, forgotPasswordPage, dashboardPage, loginUser, registerUser, logoutUser } from "../controllers/authController.js";
 
@@ -42,8 +42,8 @@ router.get("/logout", logoutUser);
 // Employee Routes
 router.get("/employees", employee.index);
 router.post("/employees", employee.insert);
-router.get("/employees/:id", employee.get);
-router.put("/employees/:id", employee.update);
-router.delete("/employees/:id", employee.delete);
+router.get("/employees/:id", employee.getEmployee);
+router.post("/employees/:id", employee.update);
+router.post("/employees/:id/delete", employee.delete);
 
 export default router;

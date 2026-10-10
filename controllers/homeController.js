@@ -24,5 +24,5 @@
     SOFTWARE.
     */
     export const homePage = (req, res) => {
-  res.render("home", { title: "XianFire Home" });
+  res.render("insert", { title: "XianFire Home" });
 };
